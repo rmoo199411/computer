@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+    <div id="app" >
+        <div class="wraper center">
+            <div class="computer">
+
+                    <div class="result" >{{count}}</div>
+
+                <ul>
+                    <a href="#"  @click="reset" ><li class="center mark1">AC</li></a>
+                    <a href="#" @click="transform()"><li class="center mark1"><i class="fa-solid fa-plus-minus"></i></li></a>
+                    <a href="#" @click="back()"><li class="center mark1"><i class="fa-solid fa-left-long"></i></i></li></a>
+                    <a href="#" @click="marks('÷')"><li class="center mark"><i class="fa-solid fa-divide"></i></li></a>
+                </ul>
+                <ul>
+                    <a href="#" @click="numbers('7')"><li class="number center"><i class="fa-solid fa-7"></i></li></a>
+                    <a href="#" @click="numbers('8')"><li class="number center"><i class="fa-solid fa-8"></i></li></a>
+                    <a href="#" @click="numbers('9')"><li class="number center"><i class="fa-solid fa-9"></i></li></a>
+                    <a href="#" @click="marks('X')"><li class="center mark"><i class="fa-solid fa-x"></i></li></a>
+                </ul>
+                <ul>
+                    <a href="#" @click="numbers('4')"><li class="number center"><i class="fa-solid fa-4"></i></li></a>
+                    <a href="#" @click="numbers('5')"><li class="number center"><i class="fa-solid fa-5"></i></li></a>
+                    <a href="#" @click="numbers('6')"><li class="number center"><i class="fa-solid fa-6"></i></li></a>
+                    <a href="#" @click="marks('-')"><li class="center mark"><i class="fa-solid fa-minus"></i></li></a>
+                </ul>
+                <ul>
+                    <a href="#" @click="numbers('1')"><li class="number center"><i class="fa-solid fa-1"></i></li></a>
+                    <a href="#" @click="numbers('2')"><li class="number center"><i class="fa-solid fa-2"></i></li></a>
+                    <a href="#" @click="numbers('3')"><li class="number center"><i class="fa-solid fa-3"></i></li></a>
+                    <a href="#" @click="marks('+')"><li class="center mark"><i class="fa-solid fa-plus"></i></li></a>
+                </ul>
+                <ul>
+                    <a href="#" @click="zero"><li class="zero1 center"><i class="fa-solid fa-0"></i></li></a>
+                    <a href="#" @click="dot()"><li class="center number dot">.</li></a>
+                    <a href="#" @click="result()"><li class="center mark"><i class="fa-solid fa-equals"></i></li></a>
+                </ul>
+            </div>
+        </div>
+    </div>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+    const { createApp } = Vue
+    
+    const app = createApp({
+        data() {
+            return {
+                count: '0',
+                resultconut: 0,
+                mar: 0,
+            }
+        },
+
+        methods: {
+            reset() {
+                this.count = '0'
+                this.resultconut = 0
+                this.mar = 0
+            },
+
+            zero(){
+                if(this.count == '+' || this.count == '-' || this.count == 'X' || this.count == '÷' ){
+                    this.count = '0'
+                }else if(this.count != 0){
+                    this.count += '0'             
+                }                
+            },
+
+            numbers(num){
+
+                if(this.count == '+' || this.count == '-' || this.count == 'X' || this.count == '÷'){
+                    this.count = num
+                }else if(this.count == '0.'){
+                    this.count += num
+                }else if(this.count == 0 || this.count == '0.'){
+                    this.count = num
+                }else{
+                    this.count += num
+                }  
+            },
+
+            marks(mark){
+
+                if(this.count != '+' && this.count != '-' && this.count != 'X' && this.count != '÷'){
+
+                    if(this.mar == 0){
+                        this.resultconut = Number(this.count)
+                        this.count = String(this.resultconut)
+                    }else if(this.mar == '+'){
+                        this.resultconut = this.addpoint(this.count,this.resultconut)
+                        this.count = String(this.resultconut)    
+                    }else if(this.mar == '-'){
+                        this.resultconut = this.minuspoint(this.count,this.resultconut)
+                        this.count = String(this.resultconut)
+                    }else if(this.mar == 'X'){
+                        this.resultconut = this.multiplypoint(this.count,this.resultconut)
+                        this.count = String(this.resultconut)
+                    }else if(this.mar == '/'){
+                        this.resultconut = this.divisionpoint(this.count,this.resultconut)
+                        this.count = String(this.resultconut)
+                    }
+                }
+                this.count = mark
+                this.mar = mark                
+            },
+
+            result(){
+                if(this.count == '+' || this.count == '-' || this.count == 'X' || this.count == '÷' || this.count == '.'){
+                    this.count = String(this.resultconut)
+                }else{
+               
+                    if(this.mar == '+'){
+
+                        this.resultconut = this.addpoint(this.count,this.resultconut)
+                        this.count = String(this.resultconut)
+                        this.mar = 0
+
+                    }else if(this.mar == '-'){
+
+                        this.resultconut = this.minuspoint(this.resultconut,this.count)
+                        this.count = String(this.resultconut)
+                        this.mar = 0
+
+                    }else if(this.mar == 'X'){
+
+                        this.resultconut = this.multiplypoint(this.resultconut,this.count)
+                        this.count = String(this.resultconut)
+                        this.mar = 0
+                        
+                    }else if(this.mar == '÷'){
+
+                        this.resultconut = this.divisionpoint(this.resultconut,this.count)
+                        this.count = String(this.resultconut)
+                        this.mar = 0
+
+                    }else if(this.mar == 0){
+                        this.resultconut = Number(this.count)
+                        this.count = String(this.count)
+                    }
+                    
+                
+                    this.count = String(this.count)
+                    if(this.count.length >= 12){
+                        this.count = this.count.slice(0,12) +'...'
+                    }
+
+                }  
+            },
+
+            back(){
+
+                if(this.count != 0){
+                    let countArray = this.count.split('');
+                    countArray.splice(countArray.length-1, 1);
+                    this.count = countArray.join('');
+
+                    if(this.count == '' ){
+                        this.count = 0
+                    }
+                }
+
+            },
+
+            transform(){
+                if(this.count != '+' && this.count != '-' && this.count != 'X' && this.count != '÷'){
+                    this.count = -this.count
+                    this.count = String(this.count)
+                    this.resultconut = Number(this.count)
+                } 
+            },
+
+            dot(){
+                if(this.count == '+' || this.count == '-' || this.count == 'X' || this.count == '÷'){
+                    this.count = '.'
+                }else{
+                    this.count = Number(this.count)
+                    if(this.count - Math.floor(this.count) == 0){
+                        this.count+='.'
+                    }
+                }
+
+                
+            },
+
+            decimal(num){
+                let result = num.toString().split('.')[1]
+                return result
+            },
+
+            addpoint(num,num2){
+
+            let decimalPart2 = 0
+            let length2 = 0
+            let decimalPart = 0
+            let length = 0
+
+            if(num2 - Math.floor(num2) > 0 ){
+                decimalPart2 = this.decimal(num2)
+                length2 = decimalPart2.length
+            }else{
+                length2 = 0
+                decimalPart2 = 0
+            }
+
+            if(num - Math.floor(num) > 0 ){
+                decimalPart = this.decimal(num)
+                length = decimalPart.length
+            }else{
+                length = 0
+                decimalPart = 0
+            }
+
+            let result =(parseInt(num2)+ parseInt(num))+'.'+ 
+            ((decimalPart*Math.pow(10, length2) + decimalPart2*Math.pow(10, length)))
+
+            return result = Number(result)
+
+            },
+
+            minuspoint(num,num2){
+                let decimalPart2 = 0
+                let length2 = 0
+                let decimalPart = 0
+                let length = 0
+                let newnum = 0
+                let newnum2 = 0
+                let result = 0
+                
+                if(num - Math.floor(num) > 0 ){
+                    decimalPart = this.decimal(num)
+                    length = decimalPart.length
+                }else{
+                    length = 0
+                    decimalPart = 0
+                }
+
+                
+                if(num2 - Math.floor(num2) > 0 ){
+                    decimalPart2 = this.decimal(num2)
+                    length2 = decimalPart2.length
+                }else{
+                    length2 = 0
+                    decimalPart2 = 0
+                }
+
+
+
+                if(length >= length2){
+                    newnum = num*Math.pow(10, length)
+                    newnum2 = num2*Math.pow(10, length)
+                    return result = (newnum-newnum2)/Math.pow(10, length)
+                }else{
+                    newnum = num*Math.pow(10, length2)
+                    newnum2 = num2*Math.pow(10, length2)
+                    return result = (newnum-newnum2)/Math.pow(10, length2)
+                }
+
+            },
+                        
+            multiplypoint(num,num2){
+                let decimalPart2 = 0
+                let length2 = 0
+                let decimalPart = 0
+                let length = 0
+                let newnum = 0
+                let newnum2 = 0
+                let result = 0
+                
+                
+
+                if(num - Math.floor(num) > 0 ){
+                    decimalPart = this.decimal(num)
+                    length = decimalPart.length
+                }else{
+                    length = 0
+                    decimalPart = 0
+                }
+                newnum = num*Math.pow(10, length)
+
+
+                if(num2 - Math.floor(num2) > 0 ){
+                    decimalPart2 = this.decimal(num2)
+                    length2 = decimalPart2.length
+                }else{
+                    length2 = 0
+                    decimalPart2 = 0
+                }
+                newnum2 = num2*Math.pow(10, length2)
+                
+                return result = (newnum*newnum2) / Math.pow(10, length2+length)
+            },
+
+            divisionpoint(num,num2){
+                let decimalPart2 = 0
+                let length2 = 0
+                let decimalPart = 0
+                let length = 0
+                let newnum = 0
+                let newnum2 = 0
+                let result = 0
+                
+                
+
+                if(num - Math.floor(num) > 0 ){
+                    decimalPart = this.decimal(num)
+                    length = decimalPart.length
+                }else{
+                    length = 0
+                    decimalPart = 0
+                }
+                newnum = num*Math.pow(10, length)
+
+
+                if(num2 - Math.floor(num2) > 0 ){
+                    decimalPart2 = this.decimal(num2)
+                    length2 = decimalPart2.length
+                }else{
+                    length2 = 0
+                    decimalPart2 = 0
+                }
+                newnum2 = num2*Math.pow(10, length2)
+                
+                return result = (newnum/newnum2) / Math.pow(10, length-length2)
+
+            }
+
+        },
+    })
+
+    app.mount('#app')
+  </script>
+</body>
+</html>
