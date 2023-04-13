@@ -48,7 +48,7 @@ body{
     border: 10px solid  $font-color;
     border-radius: 20px;
     box-shadow: -3px 3px 5px rgba(234, 232, 232, 0.774);
-    
+
     .result{
         background-color: $touch-font-color;
         height: 50px;
@@ -62,6 +62,15 @@ body{
         display: flex;
         justify-content: end;
         overflow: hidden;
+    }
+
+    .mar{
+        display: flex;
+        justify-content: end;
+        margin-right: 20px;
+        color: $touch-font-color;
+        font-size: 8px; 
+        height: 10px;
     }
 
     .mark1{
@@ -130,6 +139,7 @@ body{
         background-color: $font-color;
 
     }
+    
 
 
 }

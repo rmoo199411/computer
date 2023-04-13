@@ -14,7 +14,8 @@
         <div class="wraper center">
             <div class="computer">
 
-                    <div class="result" >{{count}}</div>
+                    <div class="result">{{count}}</div>
+                    <div class="mar">{{mar}}</div>
 
                 <ul>
                     <a href="#"  @click="reset" ><li class="center mark1">AC</li></a>
@@ -57,7 +58,7 @@
             return {
                 count: '0',
                 resultconut: 0,
-                mar: 0,
+                mar: '',
             }
         },
 
@@ -65,14 +66,16 @@
             reset() {
                 this.count = '0'
                 this.resultconut = 0
-                this.mar = 0
+                this.mar = ''
             },
 
             zero(){
-                if(this.count == '+' || this.count == '-' || this.count == 'X' || this.count == '÷' ){
+                if(this.count == '+' || this.count == '-' || this.count == 'X' || this.count == '÷' || this.count == '0'){
                     this.count = '0'
-                }else if(this.count != 0){
+                }else if(this.count != 0 ){
                     this.count += '0'             
+                }else{
+                    this.count += '0'
                 }                
             },
 
@@ -82,8 +85,11 @@
                     this.count = num
                 }else if(this.count == '0.'){
                     this.count += num
-                }else if(this.count == 0 || this.count == '0.'){
+                }else if(this.count == '.'){
                     this.count = num
+                }else if(this.count == '0' ){
+                    this.count = Number(this.count) + Number(num)
+                    this.count = String(this.count)
                 }else{
                     this.count += num
                 }  
@@ -91,7 +97,7 @@
 
             marks(mark){
 
-                if(this.count != '+' && this.count != '-' && this.count != 'X' && this.count != '÷'){
+                if(this.count != '+' && this.count != '-' && this.count != 'X' && this.count != '÷' && this.count != '.'){
 
                     if(this.mar == 0){
                         this.resultconut = Number(this.count)
@@ -115,37 +121,40 @@
             },
 
             result(){
-                if(this.count == '+' || this.count == '-' || this.count == 'X' || this.count == '÷' || this.count == '.'){
+                if(this.count == '+' || this.count == '-' || this.count == 'X' || this.count == '÷' || this.count == '.' || this.count == 0){
                     this.count = String(this.resultconut)
                 }else{
                
                     if(this.mar == '+'){
 
+                        if(this.count == '+'){
+                            
+                        }
                         this.resultconut = this.addpoint(this.count,this.resultconut)
                         this.count = String(this.resultconut)
-                        this.mar = 0
+                        this.mar = ''
 
                     }else if(this.mar == '-'){
-
+                        
                         this.resultconut = this.minuspoint(this.resultconut,this.count)
                         this.count = String(this.resultconut)
-                        this.mar = 0
+                        this.mar = ''
 
                     }else if(this.mar == 'X'){
 
                         this.resultconut = this.multiplypoint(this.resultconut,this.count)
                         this.count = String(this.resultconut)
-                        this.mar = 0
+                        this.mar = ''
                         
                     }else if(this.mar == '÷'){
 
                         this.resultconut = this.divisionpoint(this.resultconut,this.count)
                         this.count = String(this.resultconut)
-                        this.mar = 0
+                        this.mar = ''
 
                     }else if(this.mar == 0){
                         this.resultconut = Number(this.count)
-                        this.count = String(this.count)
+                        this.count = String(this.resultconut)
                     }
                     
                 
@@ -159,13 +168,11 @@
 
             back(){
 
-                if(this.count != 0){
-                    let countArray = this.count.split('');
-                    countArray.splice(countArray.length-1, 1);
-                    this.count = countArray.join('');
+                if(this.count){
+                    this.count = this.count.slice(0, -1);
 
                     if(this.count == '' ){
-                        this.count = 0
+                        this.count = '0'
                     }
                 }
 
@@ -181,11 +188,18 @@
 
             dot(){
                 if(this.count == '+' || this.count == '-' || this.count == 'X' || this.count == '÷'){
-                    this.count = '.'
+
+                    if(this.resultconut == 0){
+                        this.count = '0.'
+                    }else if(this.count == '.'){
+                        this.count = '0.'
+                    }
+                    
                 }else{
                     this.count = Number(this.count)
+                    this.count = String(this.count)
                     if(this.count - Math.floor(this.count) == 0){
-                        this.count+='.'
+                        this.count += '.'
                     }
                 }
 

@@ -45,6 +45,14 @@ body {
   justify-content: end;
   overflow: hidden;
 }
+.computer .mar {
+  display: flex;
+  justify-content: end;
+  margin-right: 20px;
+  color: #fff;
+  font-size: 8px;
+  height: 10px;
+}
 .computer .mark1 {
   width: 50px;
   height: 50px;
